@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8" />
+  <title>{{#meta.title}}{{meta.title}} - {{/meta.title}}{{config.site_title}}</title>
+  <base href="{{config.base_url}}">
+  <link rel="shortcut icon" href="{{config.base_url}}/favicon.ico">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"> -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{config.base_url}}/styles/raneto.css">
+  <link rel="stylesheet" href="{{config.base_url}}/lib/simplemde-plus/simplemde.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css">
+
+  <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+  <script src="{{config.base_url}}/lib/simplemde-plus/simplemde.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <style>
+    .modal.show .modal-dialog {
+      padding-top: 50px;
+    }
+
+    #upload {
+      padding: 10px 10px 0px 10px;
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 16px;
+      font-weight: bold;
+      color: #7f858a;
+    }
+
+    #upload a {
+      background-color: #007a96;
+      padding: 12px 26px;
+      color: #fff;
+      font-size: 14px;
+      border-radius: 2px;
+      cursor: pointer;
+      display: block;
+      /*margin-top: 12px;*/
+      line-height: 1;
+    }
+
+    #upload a:hover {
+      background-color: #0986a3;
+    }
+
+    #upload input {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <textarea id="content">{{{content}}}</textarea>
+  <div class="modal" id="uploadModal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" style="overflow: hidden">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" id="modal-body">
+          <form action="http://img/jiu-shu.com/images/uploadone" method="post" enctype="multipart/form-data" id="uploadForm">
+            <div id="upload">Click Browse And Select Your Image
+              <a>Browse</a>
+              <input type="hidden" name="imgPath" id='imgPath' value="" />
+              <input type="file" name="image" id="fileToBeUpload" multiple="multiple" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var simplemde = new SimpleMDE({
+      element: document.getElementById("content"),
+      autofocus: true,
+      spellChecker: false,
+      status: ["autosave"],
+      showIcons: ["table", "horizontal-rule", "strikethrough", "saveToRemote", "imageUpload"],
+      promptURLs: true,
+      // autosave: {
+      //   enabled: true,
+      //   delay: 30000,
+      //   uniqueId: location.href
+      // },
+      renderingConfig: {
+        singleLineBreaks: false,
+        codeSyntaxHighlighting: true
+      }
+    });
+    simplemde.toggleSideBySide();
+
+    $(document).ready(function () {
+      $("#imageUpload").click(function () {
+        $('#uploadModal').modal('show')
+      })
+
+      $('#upload a').click(function () {
+        $('#fileToBeUpload').click();
+      });
+      $("#fileToBeUpload").change(function () {
+        var file_arr = window.location.pathname.split("/");
+        file_arr.pop();
+        file_arr.pop();
+        $('#imgPath').val(decodeURI(file_arr.join("/")));
+
+        $.ajax('/rn-uploadimage', {
+        // $.ajax('http://localhost:4000/images/uploadone', {
+
+          method: 'POST',
+          contentType: false,
+          processData: false,
+          data: new FormData($('#uploadForm')[0]),
+          success: function (data, ts) {
+            console.log(data.url)
+            $('#uploadModal').modal('hide')
+            simplemde.insertImageLink(data.url)
+          },
+          error: function (xhr, error) {
+            console.log('error happens')
+            console.log(xhr.responseText)
+          }
+        });
+      });
+      $("#saveToRemote").click(function () {
+        var file_arr = window.location.pathname.split("/");
+        file_arr.pop();
+        $.post("/rn-simplemde", {
+          file    : decodeURI(file_arr.join("/")),
+          content : simplemde.value(),
+        }, function (data) {
+          switch (data.status) {
+            case 0:
+              alert(data.message)
+              break;
+            case 1:
+            alert(data.message)
+              break;
+          }
+        }).fail(function(data) {
+          if (data.status === 403) { window.location = "/login"; }
+        });
+      });
+    })
+  </script>
+</body>
+
+</html>
