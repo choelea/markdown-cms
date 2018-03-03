@@ -1,8 +1,8 @@
 {
-  "name": "raneto",
+  "name": "markdown-cms",
   "version": "0.14.0",
   "description": "Markdown powered Knowledgebase",
-  "author": "Gilbert Pellegrom <gilbert@pellegrom.me>",
+  "author": "Joe <joe.lea@foxmail.com>",
   "license": "MIT",
   "keywords": [
     "raneto",
@@ -10,24 +10,23 @@
     "markdown",
     "static",
     "site",
-    "generator"
+    "generator",
+    "cms"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/gilbitron/Raneto.git"
+    "url": "https://github.com/choelea/markdown-cms.git"
   },
-  "bugs": "https://github.com/gilbitron/Raneto/issues",
+  "bugs": "https://github.com/choelea/markdown-cms/issues",
   "contributors": [
-    "https://github.com/gilbitron/Raneto/graphs/contributors"
+    "https://github.com/choelea/markdown-cms/graphs/contributors"
   ],
   "licenses": [
     {
-      "type": "MIT",
-      "url": "https://raw.githubusercontent.com/gilbitron/Raneto/master/LICENSE"
+      "type": "MIT"
     }
   ],
-  "bin": "./bin/raneto",
-  "main": "./app/index.js",
+  "main": "server.js",
   "scripts": {
     "start": "DEBUG=raneto nodemon server.js",
     "start_win": "set DEBUG=raneto&&nodemon server.js",
