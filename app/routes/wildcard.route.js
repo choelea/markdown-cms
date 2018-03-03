@@ -93,7 +93,7 @@ function route_wildcard (config, raneto) {
           config: config,
           originalUrl: req.originalUrl,
           pages: build_nested_pages(pageList),
-          meta: meta || null,
+          meta: meta || {},
           content: content,
           body_class: template + '-' + raneto.cleanString(slug),
           last_modified: get_last_modified(config, meta, file_path),
