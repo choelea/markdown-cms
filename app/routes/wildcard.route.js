@@ -7,7 +7,6 @@ var fs = require('fs');
 var build_nested_pages = require('../functions/build_nested_pages.js');
 var marked = require('joe-marked');
 var {renderer, slugify} = require('../core/marked-custom')
-var toc = require('markdown-toc');
 var get_last_modified = require('../functions/get_last_modified.js');
 var remove_image_content_directory = require('../functions/remove_image_content_directory.js');
 const debug = require('debug')('raneto');
@@ -46,17 +45,7 @@ function route_wildcard (config, raneto) {
 
       // Process Markdown files
       if (path.extname(file_path) === '.md') {
-
-        // Meta
-        var meta = raneto.processMeta(content);
-        meta.custom_title = meta.title;
-        if (!meta.title) { meta.title = raneto.slugToTitle(file_path); }
-
-        // Content
-        // content = raneto.stripMeta(content);
-        // content = raneto.processVars(content);
-
-        var template = meta.template || 'page';
+        var template = 'page'
         var render = template;
 
         // Check for "/edit" suffix
@@ -74,21 +63,19 @@ function route_wildcard (config, raneto) {
             layout = null
           }
         } else {
-
-          // Render Table of Contents
-          if (config.table_of_contents) {
-            var tableOfContents = toc(content, { maxdepth: 4, slugify });
-            if (tableOfContents.content) {
-              content = tableOfContents.content + '\n\n' + content;
-            }
-          }
-
           // Render Markdown
           marked.setOptions({
             langPrefix: ''
           });
-          content = marked(content, { renderer }).html;
+          let markObj = marked(content, { toc:true, renderer });
+          content = markObj.html;
 
+          // Meta
+          var meta = markObj.meta;
+          meta.custom_title = meta.title;
+          if (!meta.title) { meta.title = raneto.slugToTitle(file_path); }
+          if (meta.template) { template = meta.template };
+          
         }
 
         var pageList = remove_image_content_directory(config, raneto.getPages(slug));
@@ -106,7 +93,7 @@ function route_wildcard (config, raneto) {
           config: config,
           originalUrl: req.originalUrl,
           pages: build_nested_pages(pageList),
-          meta: meta,
+          meta: meta || null,
           content: content,
           body_class: template + '-' + raneto.cleanString(slug),
           last_modified: get_last_modified(config, meta, file_path),
