@@ -34,6 +34,14 @@ module.exports = {
       repo : 'git@github.com:choelea/markdown-cms.git',
       path : '/home/joe/nodejsapp/markdown-cms',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
+    },
+    prd : { // quick deploy with out npm install
+      user : 'joe',
+      host : '182.254.242.31',
+      ref  : 'origin/master',
+      repo : 'git@github.com:choelea/markdown-cms.git',
+      path : '/home/joe/nodejsapp/markdown-cms',
+      'post-deploy' : 'pm2 reload ecosystem.config.js --env production'
     }
   }
 };
