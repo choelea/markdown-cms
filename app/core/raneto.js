@@ -5,10 +5,10 @@ const fs = require('fs');
 const glob = require('glob');
 const _ = require('underscore');
 const _s = require('underscore.string');
-const marked = require('joe-marked');
+const {marked,fetchMeta} = require('joe-marked');
 const lunr = require('lunr');
 const yaml = require('js-yaml');
-
+const debug = require('debug')('raneto')
 const default_config = {
   // The base URL of your site (allows you to use %base_url% in Markdown files)
   base_url: '',
@@ -30,18 +30,6 @@ const default_config = {
   // Toggle debug logging
   debug: false
 };
-
-// Regex for page meta (considers Byte Order Mark \uFEFF in case there's one)
-// Look for the the following header formats at the beginning of the file:
-// /*
-// {header string}
-// */
-//   or
-// ---
-// {header string}
-// ---
-const _metaRegex = /^\uFEFF?\/\*([\s\S]*?)\*\//i;
-const _metaRegexYaml = /^\uFEFF?---([\s\S]*?)---/i;
 
 function patch_content_dir (content_dir) {
   return content_dir.replace(/\\/g, '/');
@@ -120,17 +108,7 @@ class Raneto {
     return meta;
   }
 
-  // Strip meta from Markdown content
-  stripMeta (markdownContent) {
-    switch (true) {
-      case _metaRegex.test(markdownContent):
-        return markdownContent.replace(_metaRegex, '').trim();
-      case _metaRegexYaml.test(markdownContent):
-        return markdownContent.replace(_metaRegexYaml, '').trim();
-      default:
-        return markdownContent.trim();
-    }
-  }
+
 
   // Replace content variables in Markdown content
   processVars (markdownContent) {
@@ -159,10 +137,9 @@ class Raneto {
       }
       slug = slug.replace('.md', '').trim();
 
-      const meta    = this.processMeta(file.toString('utf-8'));
-      let content = this.stripMeta(file.toString('utf-8'));
-      content     = this.processVars(content);
-      const html    = marked(content).html;
+      const parsedObj = marked(file.toString('utf-8'));
+      const meta    = parsedObj.meta;
+      const html    = parsedObj.html;
 
       return {
         slug    : slug,
@@ -262,7 +239,7 @@ class Raneto {
           slug = slug.replace('.md', '').trim();
 
           const dir  = path.dirname(shortPath);
-          const meta = this.processMeta(file.toString('utf-8'));
+          const meta = fetchMeta(file.toString('utf-8'));
 
           if (page_sort_meta && meta[page_sort_meta]) {
             pageSort = parseInt(meta[page_sort_meta], 10);
@@ -294,19 +271,19 @@ class Raneto {
 
   // Index and search contents
   doSearch (query) {
+    debug('start query for: ' + query)
     const contentDir = patch_content_dir(path.normalize(this.config.content_dir));
     const files = glob.sync(contentDir + '**/*.md');
     const idx   = lunr(function () {
       this.field('title', { boost: 10 });
       this.field('body');
     });
-
+    debug(`will loop total ${files.length} files to search ${query}`)
     files.forEach(filePath => {
       try {
         const shortPath = filePath.replace(contentDir, '').trim();
         const file      = fs.readFileSync(filePath);
-        const meta      = this.processMeta(file.toString('utf-8'));
-
+        const meta      = fetchMeta(file.toString('utf-8'));
         idx.add({
           id    : shortPath,
           title : meta.title ? meta.title : this.slugToTitle(shortPath),
@@ -320,7 +297,7 @@ class Raneto {
 
     const results       = idx.search(query);
     const searchResults = [];
-
+    debug(`Found ${results.length} pages matched search ${query}`)    
     results.forEach(result => {
       const page = this.getPage(this.config.content_dir + result.ref);
       page.excerpt = page.excerpt.replace(new RegExp('(' + query + ')', 'gim'), '<span class="search-query">$1</span>');

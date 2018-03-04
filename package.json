@@ -36,7 +36,7 @@
     "lint": "./node_modules/.bin/eslint bin/*.js app/**/*.js example/**/*.js test/*.js translate/*.json gulpfile.js"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=8.9.0"
   },
   "dependencies": {
     "always-tail": "^0.2.0",
@@ -57,11 +57,11 @@
     "hogan-express": "^0.5.2",
     "imagemin": "^5.3.1",
     "imagemin-jpeg-recompress": "^5.1.0",
-    "joe-marked": "^0.4.4",
+    "joe-marked": "^0.4.5",
     "jquery": "^2.2.4",
     "jquery-backstretch": "^2.1.16",
     "js-yaml": "^3.9.1",
-    "lunr": "^2.1.6",
+    "lunr": "^1.0.0",
     "masonry-layout": "^4.2.1",
     "moment": "^2.20.1",
     "morgan": "^1.9.0",

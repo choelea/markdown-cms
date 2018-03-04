@@ -6,7 +6,7 @@ var fs                = require('fs');
 var sm                = require('sitemap');
 var _                 = require('underscore');
 var get_last_modified = require('../functions/get_last_modified.js');
-
+var {fetchMeta}       = require('joe-marked')
 function route_sitemap (config, raneto) {
   return function (req, res, next) {
 
@@ -42,7 +42,7 @@ function route_sitemap (config, raneto) {
         url: urls[i],
         changefreq: 'weekly',
         priority: 0.8,
-        lastmod: get_last_modified(conf, raneto.processMeta(content), files[i])
+        lastmod: get_last_modified(conf, fetchMeta(content), files[i])
       });
     }
 

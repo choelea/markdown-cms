@@ -5,8 +5,7 @@
 var path = require('path');
 var fs = require('fs');
 var build_nested_pages = require('../functions/build_nested_pages.js');
-var marked = require('joe-marked');
-var {renderer, slugify} = require('../core/marked-custom')
+var {marked} = require('joe-marked');
 var get_last_modified = require('../functions/get_last_modified.js');
 var remove_image_content_directory = require('../functions/remove_image_content_directory.js');
 const debug = require('debug')('raneto');
@@ -67,7 +66,7 @@ function route_wildcard (config, raneto) {
           marked.setOptions({
             langPrefix: ''
           });
-          let markObj = marked(content, { toc:true, renderer });
+          let markObj = marked(content, { toc:true });
           content = markObj.html;
 
           // Meta
