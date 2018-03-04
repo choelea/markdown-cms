@@ -31,7 +31,7 @@ var config = {
 
   // Controls behavior of home page if meta ShowOnHome is not present. If set to true
   // all categories or files that do not specify ShowOnHome meta property will be shown
-  show_on_home_default: true,
+  showOnHome: true,
 
   // Which Theme to Use?
   theme_dir: path.join(__dirname, 'themes'),

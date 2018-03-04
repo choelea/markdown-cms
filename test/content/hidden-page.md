@@ -1,7 +1,7 @@
-/*
-Title: Hidden Page
-Sort: 4
-ShowOnHome: false
-*/
+---
+title: Hidden Page
+sort: 4
+showOnHome: false
+...
 
 This page shoulnd't appear on the home page.

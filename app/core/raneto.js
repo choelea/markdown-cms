@@ -5,7 +5,7 @@ const fs = require('fs');
 const glob = require('glob');
 const _ = require('underscore');
 const _s = require('underscore.string');
-const {marked,fetchMeta} = require('joe-marked');
+const {marked, fetchMeta} = require('joe-marked');
 const lunr = require('lunr');
 const yaml = require('js-yaml');
 const debug = require('debug')('raneto')
@@ -24,7 +24,7 @@ const default_config = {
   category_sort: true,
   // Controls behavior of home page if meta ShowOnHome is not present. If set to true
   // all categories or files that do not specify ShowOnHome meta property will be shown
-  show_on_home_default: true,
+  showOnHome: true,
   // Specify the path of your content folder where all your '.md' files are located
   content_dir: './content/',
   // Toggle debug logging
@@ -68,47 +68,6 @@ class Raneto {
     slug = slug.replace('.md', '').trim();
     return _s.titleize(_s.humanize(path.basename(slug)));
   }
-
-  // Get meta information from Markdown content
-  processMeta (markdownContent) {
-    let meta = {};
-    let metaArr;
-    let metaString;
-    let metas;
-
-    let yamlObject;
-
-    switch (true) {
-      case _metaRegex.test(markdownContent):
-        metaArr    = markdownContent.match(_metaRegex);
-        metaString = metaArr ? metaArr[1].trim() : '';
-
-        if (metaString) {
-          metas = metaString.match(/(.*): (.*)/ig);
-          metas.forEach(item => {
-            const parts = item.split(': ');
-            if (parts[0] && parts[1]) {
-              meta[this.cleanString(parts[0], true)] = parts[1].trim();
-            }
-          });
-        }
-        break;
-
-      case _metaRegexYaml.test(markdownContent):
-        metaArr    = markdownContent.match(_metaRegexYaml);
-        metaString = metaArr ? metaArr[1].trim() : '';
-        yamlObject = yaml.safeLoad(metaString);
-        meta = this.cleanObjectStrings(yamlObject);
-        break;
-
-      default:
-        // No meta information
-    }
-
-    return meta;
-  }
-
-
 
   // Replace content variables in Markdown content
   processVars (markdownContent) {
@@ -166,7 +125,7 @@ class Raneto {
     filesProcessed.push({
       slug     : '.',
       title    : '',
-      show_on_home: true,
+      showOnHome: true,
       is_index : true,
       active: (baseSlug === ''),
       class    : 'category-index',
@@ -197,11 +156,10 @@ class Raneto {
         let dirMetadata = {};
         try {
           const metaFile = fs.readFileSync(patch_content_dir(this.config.content_dir) + shortPath + '/meta');
-          dirMetadata = this.cleanObjectStrings(yaml.safeLoad(metaFile.toString('utf-8')));
+          dirMetadata = yaml.safeLoad(metaFile.toString('utf-8'));
         } catch (e) {
           if (this.config.debug) { console.log('No meta file for', patch_content_dir(this.config.content_dir) + shortPath); }
         }
-
         if (category_sort && !dirMetadata.sort) {
           try {
             const sortFile = fs.readFileSync(patch_content_dir(this.config.content_dir) + shortPath + '/sort');
@@ -210,11 +168,10 @@ class Raneto {
             if (this.config.debug) { console.log('No sort file for', patch_content_dir(this.config.content_dir) + shortPath); }
           }
         }
-
         filesProcessed.push({
           slug     : shortPath,
           title    : dirMetadata.title || _s.titleize(_s.humanize(path.basename(shortPath))),
-          show_on_home: dirMetadata.show_on_home ? (dirMetadata.show_on_home === 'true') : this.config.show_on_home_default,
+          showOnHome: (typeof dirMetadata.showOnHome === 'boolean') ? dirMetadata.showOnHome : this.config.showOnHome,
           is_index : false,
           is_directory: true,
           active   : activePageSlug.startsWith('/' + fileSlug),
@@ -244,12 +201,11 @@ class Raneto {
           if (page_sort_meta && meta[page_sort_meta]) {
             pageSort = parseInt(meta[page_sort_meta], 10);
           }
-
           const val = _.find(filesProcessed, item => item.slug === dir);
           val.files.push({
             slug   : slug,
             title  : meta.title ? meta.title : this.slugToTitle(slug),
-            show_on_home: meta.show_on_home ? (meta.show_on_home === 'true') : this.config.show_on_home_default,
+            showOnHome: (typeof meta.showOnHome === 'boolean') ? meta.showOnHome : this.config.showOnHome,
             is_directory: false,
             active : (activePageSlug.trim() === '/' + slug),
             sort   : pageSort
@@ -294,10 +250,8 @@ class Raneto {
         if (this.config.debug) { console.log(e); }
       }
     });
-
     const results       = idx.search(query);
     const searchResults = [];
-    debug(`Found ${results.length} pages matched search ${query}`)    
     results.forEach(result => {
       const page = this.getPage(this.config.content_dir + result.ref);
       page.excerpt = page.excerpt.replace(new RegExp('(' + query + ')', 'gim'), '<span class="search-query">$1</span>');

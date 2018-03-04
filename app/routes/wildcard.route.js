@@ -74,7 +74,6 @@ function route_wildcard (config, raneto) {
           meta.custom_title = meta.title;
           if (!meta.title) { meta.title = raneto.slugToTitle(file_path); }
           if (meta.template) { template = meta.template };
-          
         }
 
         var pageList = remove_image_content_directory(config, raneto.getPages(slug));

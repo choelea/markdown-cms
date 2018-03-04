@@ -5,7 +5,6 @@ var path   = require('path');
 var chai   = require('chai');
 var expect = chai.expect;
 var Raneto = require('../app/core/raneto.js');
-
 const raneto = new Raneto();
 
 chai.should();
@@ -44,57 +43,7 @@ describe('#slugToTitle()', function () {
   it('converts "dir/some-example-file.md" into "Some Example File"', function () {
     raneto.slugToTitle('dir/some-example-file.md').should.equal('Some Example File');
   });
-
 });
-
-describe('#processMeta()', function () {
-
-  it('returns array of meta values', function () {
-    var result = raneto.processMeta('/*\n' +
-      'Title: This is a title\n' +
-      'Description: This is a description\n' +
-      'Sort: 4\n' +
-      'Multi word: Value\n' +
-      '*/\n');
-    expect(result).to.have.property('title', 'This is a title');
-    expect(result).to.have.property('description', 'This is a description');
-    expect(result).to.have.property('sort', '4');
-    expect(result).to.have.property('multi_word', 'Value');
-  });
-
-  it('returns an empty array if no meta specified', function () {
-    var result = raneto.processMeta('no meta here');
-    /* eslint-disable no-unused-expressions */
-    expect(result).to.be.empty;
-  });
-
-  it('returns proper meta from file starting with a BOM character', function () {
-    raneto.config.content_dir = path.join(__dirname, 'content/');
-    var result = raneto.getPage(path.join(raneto.config.content_dir, 'page-with-bom.md'));
-    expect(result).to.have.property('title', 'Example Page With BOM');
-  });
-
-  it('returns array of meta values (YAML)', function () {
-    var result = raneto.processMeta('---\n' +
-      'Title: This is a title\n' +
-      'Description: This is a description\n' +
-      'Sort: 4\n' +
-      'Multi word: Value\n' +
-      '---\n');
-    expect(result).to.have.property('title', 'This is a title');
-    expect(result).to.have.property('description', 'This is a description');
-    expect(result).to.have.property('sort', '4');
-    expect(result).to.have.property('multi_word', 'Value');
-  });
-
-  it('returns proper meta from file starting with a BOM character (YAML)', function () {
-    raneto.config.content_dir = path.join(__dirname, 'content/');
-    var result = raneto.getPage(raneto.config.content_dir + 'page-with-bom-yaml.md');
-    expect(result).to.have.property('title', 'Example Page With BOM for YAML');
-  });
-
-});
-
 
 describe('#processVars()', function () {
 
@@ -160,49 +109,50 @@ describe('#getPages()', function () {
     expect(result[1].files[0]).to.have.property('active', false);
   });
 
-  it('adds show_on_home property to directory', function () {
+  it('adds showOnHome property to directory', function () {
     raneto.config.content_dir = path.join(__dirname, 'content/');
     var result = raneto.getPages();
-    expect(result[0]).to.have.property('show_on_home', true);
+    expect(result[0]).to.have.property('showOnHome', true);
   });
 
-  it('adds show_on_home property to files', function () {
+  it('adds showOnHome property to files', function () {
     raneto.config.content_dir = path.join(__dirname, 'content/');
     var result = raneto.getPages();
-    expect(result[0].files[0]).to.have.property('show_on_home', true);
+    expect(result[0].files[0]).to.have.property('showOnHome', true);
   });
 
-  it('loads meta show_on_home value from directory', function () {
+  it('loads meta showOnHome value from directory', function () {
     raneto.config.content_dir = path.join(__dirname, 'content/');
     var result = raneto.getPages();
-    expect(result[3]).to.have.property('show_on_home', false);
+    expect(result[3]).to.have.property('showOnHome', false);
   });
 
-  it('loads meta show_on_home value from file', function () {
+  it('loads meta showOnHome value from file', function () {
     raneto.config.content_dir = path.join(__dirname, 'content/');
     var result = raneto.getPages();
-    expect(result[0].files[4]).to.have.property('show_on_home', false);
+    console.log(result[0])
+    expect(result[0].files[4]).to.have.property('showOnHome', false);
   });
 
-  it('applies show_on_home_default in absence of meta for directories', function () {
+  it('applies showOnHome in absence of meta for directories', function () {
     raneto.config.content_dir = path.join(__dirname, 'content/');
-    raneto.config.show_on_home_default = false;
+    raneto.config.showOnHome = false;
     var result = raneto.getPages();
-    expect(result[1]).to.have.property('show_on_home', false);
+    expect(result[1]).to.have.property('showOnHome', false);
   });
 
-  it('applies show_on_home_default in absence of meta for files', function () {
+  it('applies showOnHome in absence of meta for files', function () {
     raneto.config.content_dir = path.join(__dirname, 'content/');
-    raneto.config.show_on_home_default = false;
+    raneto.config.showOnHome = false;
     var result = raneto.getPages();
-    expect(result[1].files[0]).to.have.property('show_on_home', false);
+    expect(result[1].files[0]).to.have.property('showOnHome', false);
   });
 
   it('category index always shows on home', function () {
     raneto.config.content_dir = path.join(__dirname, 'content/');
-    raneto.config.show_on_home_default = false;
+    raneto.config.showOnHome = false;
     var result = raneto.getPages();
-    expect(result[0]).to.have.property('show_on_home', true);
+    expect(result[0]).to.have.property('showOnHome', true);
   });
 
 });

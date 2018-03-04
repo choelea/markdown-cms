@@ -7,7 +7,6 @@ var moment = require('moment');
 
 // Returns a formated datetime
 function get_last_modified (config, meta, file_path) {
-
   if (meta && meta.modified) {
     return moment(meta.modified).format(config.datetime_format);
   } else {
