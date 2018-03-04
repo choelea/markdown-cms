@@ -45,7 +45,7 @@
 }
 
 .menu .category-title {
-  margin: 25px 0 10px 0;
+  margin: 10px 0 10px 0;
   font-size: 14px;
   font-weight: bold;
 }
@@ -58,6 +58,7 @@
   display: inline-block;
   line-height: 20px;
   color: #888;
+  padding-left: 10px
 }
 
 .menu a:hover {
@@ -67,7 +68,7 @@
 
 .menu .page.active a {
   font-weight: bold;
-  color: #444;
+  color: #286090;
 }
 
 .page-home .header .search-form {
