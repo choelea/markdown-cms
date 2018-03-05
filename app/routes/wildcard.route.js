@@ -57,10 +57,10 @@ function route_wildcard (config, raneto) {
           }
           // render = 'edit';
           render = 'simplemdeEditor';
-          if (req.query.editor) {
-            render = req.query.editor;
-            layout = null
-          }
+          layout = null
+          // if (req.query.editor) {
+          //   render = req.query.editor;
+          // }
         } else {
           // Render Markdown
           marked.setOptions({

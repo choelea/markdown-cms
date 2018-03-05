@@ -18,9 +18,12 @@
   <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <style>
     .modal.show .modal-dialog {
-      padding-top: 50px;
+      top: 20%;
     }
-
+    .modal-footer{
+      display: -webkit-box;
+      -webkit-box-pack:center
+    }
     #upload {
       padding: 10px 10px 0px 10px;
       text-align: center;
@@ -73,6 +76,19 @@
       </div>
     </div>
   </div>
+  <div class="modal" id="alertModal"  style="overflow: hidden">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" id="modal-body">
+          <span class='text-success'>成功保存至服务器!点击'VIEW'前往浏览，点击'EDIT'继续编辑。</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">EDIT</button>
+          <a class="btn btn-primary" id='viewAnchor' href="javascript:">VIEW</a>
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
     var simplemde = new SimpleMDE({
       element: document.getElementById("content"),
@@ -81,19 +97,21 @@
       status: ["autosave"],
       showIcons: ["table", "horizontal-rule", "strikethrough", "saveToRemote", "imageUpload"],
       promptURLs: true,
-      // autosave: {
-      //   enabled: true,
-      //   delay: 30000,
-      //   uniqueId: location.href
-      // },
+      autosave: {
+        enabled: true,
+        delay: 30000,
+        uniqueId: location.href
+      },
       renderingConfig: {
         singleLineBreaks: false,
         codeSyntaxHighlighting: true
       }
     });
     simplemde.toggleSideBySide();
-
     $(document).ready(function () {
+      $('#viewAnchor').click(function(){
+        window.location = location.href.substring(0, location.href.length-5);
+      })
       $("#imageUpload").click(function () {
         $('#uploadModal').modal('show')
       })
@@ -115,7 +133,6 @@
           processData: false,
           data: new FormData($('#uploadForm')[0]),
           success: function (data, ts) {
-            console.log(data.url)
             $('#uploadModal').modal('hide')
             simplemde.insertImageLink(data.url)
           },
@@ -134,7 +151,8 @@
         }, function (data) {
           switch (data.status) {
             case 0:
-              alert(data.message)
+              simplemde.clearAutosavedValue()
+              $('#alertModal').modal('show')
               break;
             case 1:
             alert(data.message)
