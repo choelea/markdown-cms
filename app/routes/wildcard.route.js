@@ -17,8 +17,6 @@ function route_wildcard (config, raneto) {
     if (!req.params[0]) { return next(); }
 
     var suffix = 'edit';
-    let layout = 'layout';
-
     var slug = req.params[0];
     debug('slug is:' + slug)
     debug('query.editor=' + req.query.editor)
@@ -57,7 +55,6 @@ function route_wildcard (config, raneto) {
           }
           // render = 'edit';
           render = 'simplemdeEditor';
-          layout = null
           // if (req.query.editor) {
           //   render = req.query.editor;
           // }
@@ -98,8 +95,7 @@ function route_wildcard (config, raneto) {
           lang: config.lang,
           loggedIn: loggedIn,
           username: (config.authentication ? req.session.username : null),
-          canEdit: canEdit,
-          layout: layout
+          canEdit: canEdit
         });
 
       }

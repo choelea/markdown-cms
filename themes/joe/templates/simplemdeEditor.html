@@ -145,13 +145,13 @@
       $("#saveToRemote").click(function () {
         var file_arr = window.location.pathname.split("/");
         file_arr.pop();
+        simplemde.clearAutosavedValue()
         $.post("/rn-simplemde", {
           file    : decodeURI(file_arr.join("/")),
           content : simplemde.value(),
         }, function (data) {
           switch (data.status) {
             case 0:
-              simplemde.clearAutosavedValue()
               $('#alertModal').modal('show')
               break;
             case 1:
