@@ -9,7 +9,8 @@ const simpleGit = require('simple-git')
  * @param {*} config
  */
 module.exports = function run (config) {
-  if ((!process.env.NODE_APP_INSTANCE) || process.env.NODE_APP_INSTANCE === 0) {
+  console.log(`process.env.NODE_APP_INSTANCE is ${process.env.NODE_APP_INSTANCE}`)
+  if (process.env.NODE_APP_INSTANCE === 0) {
     console.log('schedule a job to commit and push docs')
     schedule.scheduleJob(config.cron_git_push, function () {
       simpleGit(config.content_dir)

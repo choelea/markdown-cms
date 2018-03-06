@@ -13,10 +13,6 @@
   <link rel="stylesheet" href="{{config.base_url}}/lib/highlightjs/styles/solarized_light.css">
   <link rel="stylesheet" href="{{config.base_url}}/styles/raneto.css">
   <link rel="stylesheet" href="{{config.base_url}}/styles/ghostdown.css">
-  {{#config.rtl_layout}}
-  <link rel="stylesheet" href="{{config.base_url}}/styles/raneto.rtl.css">
-  <link rel="stylesheet" href="{{config.base_url}}/lib/bootstrap-rtl/dist/css/bootstrap-rtl.min.css">
-  {{/config.rtl_layout}}
 
   {{{config.analytics}}}
 
@@ -60,7 +56,7 @@
             {{/config.authentication}}
           </form>
           {{/config.googleoauth}}
-          
+
           <form class="search-form form-inline pull-right" action="{{config.base_url}}/">
             <div class="form-group">
               <label class="sr-only" for="search">{{lang.global.search}}</label>

@@ -7,11 +7,14 @@ ShowOnHome: false
 Markdown-CMS 是一款可以在线编辑并解析Markdown内容称网页的nodejs app；借助于github， markdown可以快速搭建无需任何数据库的个人知识站点。其代码构建于Raneto的初始代码之上，主要修复/优化了以下：
 - 对中文的支持
 - 编辑器更换为 [simplemde-plus](https://github.com/choelea/simplemde-plus)
-- markdown 解析更换为joe-marked
+- markdown 解析更换为joe-marked (raneto和核心库raneto.js 很多都被joe-marked所取代)
 - 图片上传
 - 其他细节修复
 
-> Raneto代码已有几年未更新，Markdown-cms只做功能上的优化，以适用为目的。
+Markdown-CMS精简了一些个人认为无用的：
+- rtl_layout  从右向左的排版 (少部分国家适用)
+
+> Raneto代码已有几年未更新，Markdown-cms只做功能上的优化，以适用为目的。
 
 # Mark文档编写约定
 在线查阅请访问 [旧书 Tech. Docs 官网](http://tech.jiu-shu.com)

@@ -91,9 +91,6 @@ var config = {
   // Sets the format for datetime's
   datetime_format: 'Do MMM YYYY',
 
-  // Set to true to render suitable layout for RTL languages
-  rtl_layout: false,
-
   // Edit Home Page title, description, etc.
   home_meta: {
     // title       : 'Custom Home Title',
