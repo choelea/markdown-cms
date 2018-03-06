@@ -36,7 +36,7 @@ var config = {
   // Which Theme to Use?
   theme_dir: path.join(__dirname, 'themes'),
   // theme_name: 'default',
-  theme_name: 'joe',
+  theme_name: 'new',
 
   // Specify the path of your content folder where all your '.md' files are located
   // Fix: Needs trailing slash for now!
@@ -66,14 +66,6 @@ var config = {
   // If authentication is enabled, set this to true to enable authentication for reading too
   authentication_for_read: false,
 
-  // Google OAuth
-  googleoauth: false,
-  oauth2: {
-    client_id: 'GOOGLE_CLIENT_ID',
-    client_secret: 'GOOGLE_CLIENT_SECRET',
-    callback: 'http://localhost:3000/auth/google/callback',
-    hostedDomain: 'google.com'
-  },
   secret: 'someCoolSecretRightHere',
 
   credentials: [

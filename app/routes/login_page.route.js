@@ -6,8 +6,7 @@ function route_login_page (config) {
 
     return res.render('login', {
       layout      : null,
-      lang        : config.lang,
-      googleoauth : config.googleoauth
+      lang        : config.lang
     });
 
   };

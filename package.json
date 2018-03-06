@@ -55,6 +55,7 @@
     "gulp-shell": "^0.6.5",
     "highlightjs": "^9.10.0",
     "hogan-express": "^0.5.2",
+    "hogan-express-partials": "0.0.4",
     "imagemin": "^5.3.1",
     "imagemin-jpeg-recompress": "^5.1.0",
     "joe-marked": "^0.4.5",

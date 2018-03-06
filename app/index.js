@@ -13,8 +13,20 @@ var extend        = require('extend');
 var hogan         = require('hogan-express');
 var session       = require('express-session');
 var Raneto        = require('./core/raneto.js');
-var passport      = require('passport');
+var fs = require('fs');
 
+function loadPartials (dirPath) {
+  const filenames = fs.readdirSync(dirPath)
+  const partialJson = {}
+  filenames.forEach((filename) => {
+    const matches = /^([^.]+).html$/.exec(filename)
+    if (!matches) {
+      return
+    }
+    partialJson[matches[1]] = 'partials/' + matches[1]
+  })
+  return partialJson
+}
 function initialize (config) {
   const raneto = new Raneto();
 
@@ -34,7 +46,6 @@ function initialize (config) {
   var always_authenticate       = require('./middleware/always_authenticate.js')        (config);
   var authenticate_read_access  = require ('./middleware/authenticate_read_access.js')  (config);
   var error_handler             = require('./middleware/error_handler.js')              (config);
-  var oauth2                    = require('./middleware/oauth2.js');
   var route_login               = require('./routes/login.route.js')                    (config);
   var route_login_page          = require('./routes/login_page.route.js')               (config);
   var route_logout              = require('./routes/logout.route.js');
@@ -67,7 +78,8 @@ function initialize (config) {
   if (!config.theme_name) { config.theme_name = 'default'; }
   if (!config.public_dir) { config.public_dir = path.join(config.theme_dir, config.theme_name, 'public'); }
   app.set('views', path.join(config.theme_dir, config.theme_name, 'templates'));
-  app.set('layout', 'layout');
+  // app.set('layout', 'layout');
+  app.set('partials', loadPartials(path.join(config.theme_dir, config.theme_name, 'templates/partials')))
   app.set('view engine', 'html');
   app.enable('view cache');
   app.engine('html', hogan);
@@ -97,13 +109,6 @@ function initialize (config) {
       saveUninitialized : false
     }));
     app.use(authenticate_read_access);
-    // OAuth2
-    if (config.googleoauth === true) {
-      app.use(passport.initialize());
-      app.use(passport.session());
-      app.use(oauth2.router(config));
-      app.use(oauth2.template);
-    }
 
     app.post('/rn-login', route_login);
     app.get('/logout', route_logout);
@@ -117,9 +122,6 @@ function initialize (config) {
     if (config.authentication_for_edit === true) {
       middlewareToUse = always_authenticate;
     }
-    if (config.googleoauth === true) {
-      middlewareToUse = oauth2.required;
-    }
 
     app.post('/rn-edit',         middlewareToUse, route_page_edits.route_page_edit);
     app.post('/rn-simplemde',    middlewareToUse, route_page_edits.route_page_simplemde);
@@ -130,10 +132,7 @@ function initialize (config) {
   }
 
   // Router for / and /index with or without search parameter
-  if (config.googleoauth === true) {
-    app.get('/:var(index)?', oauth2.required, route_search, route_home);
-    app.get(/^([^.]*)/, oauth2.required, route_wildcard);
-  } else if (config.authentication_for_read === true) {
+  if (config.authentication_for_read === true) {
     app.get('/sitemap.xml', authenticate, route_sitemap);
     app.get('/:var(index)?', authenticate, route_search, route_home);
     app.get(/^([^.]*)/, authenticate, route_wildcard);
