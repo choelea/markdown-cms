@@ -2,13 +2,13 @@
 <html lang="zh">
 
 <head>
-  <meta charset="utf-8" />
+  {<meta charset="utf-8" />
   <title>{{#meta.title}}{{meta.title}} - {{/meta.title}}{{config.site_title}}</title>
   <base href="{{config.base_url}}">
   <link rel="shortcut icon" href="{{config.base_url}}/favicon.ico">
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"> -->
   <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{{config.base_url}}/styles/raneto.css">
+  <link rel="stylesheet" href="{{config.base_url}}/styles/raneto.css">}
   <link rel="stylesheet" href="{{config.base_url}}/lib/simplemde-plus/simplemde.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css">
 
@@ -145,13 +145,13 @@
       $("#saveToRemote").click(function () {
         var file_arr = window.location.pathname.split("/");
         file_arr.pop();
-        simplemde.clearAutosavedValue()
         $.post("/rn-simplemde", {
           file    : decodeURI(file_arr.join("/")),
           content : simplemde.value(),
         }, function (data) {
           switch (data.status) {
             case 0:
+              simplemde.clearAutosavedValue()
               $('#alertModal').modal('show')
               break;
             case 1:
