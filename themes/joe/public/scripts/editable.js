@@ -57,7 +57,7 @@
                       .end()
                       .text()
                       .trim()
-                      .toLowerCase()
+                      // .toLowerCase()
                       .replace(/\s+/g, "-");
         current_category = text !== "main-articles" ? text : "";
       });
