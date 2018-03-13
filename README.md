@@ -30,7 +30,7 @@ Markdown-CMS精简了一些个人认为无用的：
 Title: Tech Docs
 Description: Tech Docs collects all documents written by Joe.
 ShowOnHome: false // 只用于根目录下面的文件，文件夹中的文件不能加这个属性。
----
+...
 ```
 # GIT相关问题应对
 在linux上clone后，如果通过了chmod来修改文件夹及子目录的权限后，所有目录的文件git状态变成modified； 如果尝试用 `git diff` 查看会发现类似如下信息：

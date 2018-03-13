@@ -100,7 +100,6 @@ function route_page_edits (config, raneto) {
     try {
       const relatedFolder = req.body.imgPath
       let targetFolder = _getFilePath(relatedFolder)
-      console.log(targetFolder)
       const file = req.file;
       const destPath = path.join(targetFolder, file.originalname)
       fs.renameSync(file.path, destPath);
@@ -116,7 +115,24 @@ function route_page_edits (config, raneto) {
       res.status(500).json({ msg: 'Error Happened!' })
     }
   }
-  return { route_page_edit, route_page_simplemde, uploadImage }
+
+  /**
+   * Not used for now. uploadImage can also upload pdf
+   */
+  const upload =  (req, res, next) => {
+    try {
+      const relatedFolder = req.body.imgPath
+      let targetFolder = _getFilePath(relatedFolder)
+      const file = req.file;
+      const destPath = path.join(targetFolder, file.originalname)
+      fs.renameSync(file.path, destPath);
+      res.json({ url: `${config.base_url}${relatedFolder}/${file.originalname}` });
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ msg: 'Error Happened!' })
+    }
+  }
+  return { route_page_edit, route_page_simplemde, uploadImage, upload }
 }
 
 // Exports
