@@ -109,7 +109,7 @@ function route_page_edits (config, raneto) {
           imageminJpegRecompress(_compressOption)
         ]
       });
-      res.json({ url: `${config.base_url}${relatedFolder}/${file.originalname}` });
+      res.json({ filename:file.originalname, url: `${config.base_url}${relatedFolder}/${file.originalname}` });
     } catch (err) {
       console.error(err)
       res.status(500).json({ msg: 'Error Happened!' })

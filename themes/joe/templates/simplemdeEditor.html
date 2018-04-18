@@ -134,7 +134,7 @@
           data: new FormData($('#uploadForm')[0]),
           success: function (data, ts) {
             $('#uploadModal').modal('hide')
-            simplemde.insertImageLink(data.url)
+            simplemde.insertImageLink(data.url, data.filename)
           },
           error: function (xhr, error) {
             console.log('error happens')
