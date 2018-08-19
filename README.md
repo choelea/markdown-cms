@@ -1,8 +1,4 @@
----
-Title: Markdown-CMS 介绍及使用说明
-Description:  Markdown-CMS 介绍及使用说明； 文档编辑规范及约定
-ShowOnHome: false
-...
+
 
 Markdown-CMS 是一款可以在线编辑并解析Markdown内容称网页的nodejs app；借助于github， markdown可以快速搭建无需任何数据库的个人知识站点。其代码构建于Raneto的初始代码之上，主要修复/优化了以下：
 - 对中文的支持
@@ -20,7 +16,7 @@ Markdown-CMS精简了一些个人认为无用的：
 在线查阅请访问 [旧书 Tech. Docs 官网](http://tech.jiu-shu.com)
 ## 文档注意事项
 - 文件名不要出现‘.’
-- 尽量使用英文文件夹；尽量使用英文文件名
+- 尽量使用英文文件夹；尽量使用英文文件名；文件夹名称需要注意大小写（IT Technologies会引发错误，正确的写法是It Technologies）
 - 文件夹和文件名避免使用空格，可以使用-作为连接符
 - 文件的最前端定义的meta信息必须遵循如下格式
 
