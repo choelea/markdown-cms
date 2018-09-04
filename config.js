@@ -110,7 +110,7 @@ config.public_dir = path.join(__dirname, 'themes', config.theme_name, 'public');
  * Load credential config from disk
 */
 function loadConfig () {
-  const sdkConfigPath = '/data/config/raneto.config.json'
+  const sdkConfigPath = '/home/okchem/nodejs/config/raneto.config.json'
 
   // 检查文件是否存在
   try {

@@ -14,7 +14,8 @@ module.exports = {
       //   PORT: 3011
       // },
       env_production : {
-        NODE_ENV: 'production'
+        NODE_ENV: 'production',
+        PORT:7999
       }
     }
   ],
@@ -22,7 +23,7 @@ module.exports = {
   /**
    * Deployment section
    * http://pm2.keymetrics.io/docs/usage/deployment/
-   * 
+   *
    * Step1 (initiate, one time step): pm2 deploy ecosystem.config.js  production setup
    * Step2:  pm2 deploy ecosystem.config.js  production
    */
