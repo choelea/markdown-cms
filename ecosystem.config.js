@@ -13,9 +13,9 @@ module.exports = {
       // env: {  If we don't comment here, it will override below deploy config
       //   PORT: 3011
       // },
-      env_production : {
-        NODE_ENV: 'production',
-        PORT:7999
+      env_prd: {
+        NODE_ENV: 'prd',
+        PORT: 8199
       }
     }
   ],
@@ -42,7 +42,7 @@ module.exports = {
       ref  : 'origin/master',
       repo : 'git@github.com:choelea/markdown-cms.git',
       path : '/home/joe/nodejsapp/markdown-cms',
-      'post-deploy' : 'pm2 reload ecosystem.config.js --env production'
+      'post-deploy' : 'pm2 reload ecosystem.config.js --env prd'
     }
   }
 };
