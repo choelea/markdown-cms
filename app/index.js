@@ -8,6 +8,7 @@ var favicon       = require('serve-favicon');
 var logger        = require('morgan');
 var cookie_parser = require('cookie-parser');
 var body_parser   = require('body-parser');
+var robots        = require('express-robots')
 var moment        = require('moment');
 var extend        = require('extend');
 var hogan         = require('hogan-express');
@@ -83,7 +84,7 @@ function initialize (config) {
   app.set('view engine', 'html');
   app.enable('view cache');
   app.engine('html', hogan);
-
+  app.use(robots({UserAgent: '*'}))
   // Setup Express
   app.use(favicon(config.public_dir + '/favicon.ico'));
   app.use('/rn-github', body_parser.raw({type:'application/json'}), route_git(config)); // needs to keep body as buffer
