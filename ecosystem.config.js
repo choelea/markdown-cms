@@ -14,7 +14,8 @@ module.exports = {
       //   PORT: 3011
       // },
       env_production : {
-        NODE_ENV: 'production'
+        NODE_ENV: 'production',
+        PORT: 3011 // 3000 is already used by grafana
       }
     }
   ],
