@@ -16,7 +16,7 @@ var config = {
   support_email: '',
 
   // Footer Text / Copyright
-  copyright: 'Copyright &copy; ' + new Date().getFullYear() + ' - <a href="http://www.jiu-shu.com">Powered by Joe</a>',
+  copyright: 'Copyright &copy; ' + new Date().getFullYear() + ' - <a href="http://www.jiu-shu.com">Powered by Joe</a> <a href="http://www.beian.miit.gov.cn">鄂ICP备17014307号-2</a>',
 
   // Excerpt length (used in search)
   excerpt_length: 400,
