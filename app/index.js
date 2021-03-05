@@ -141,7 +141,15 @@ function initialize (config) {
   } else {
     app.get('/sitemap.xml', route_sitemap);
     app.get('/:var(index)?', route_search, route_home);
-    app.get(/^([^.]*)/, route_wildcard);
+    app.get(/^([^.]*)/, (req, res, next) => { // 修改支持一个私有的访问控制 （必须登录才可以访问）
+      if (req.originalUrl.startsWith('/Private') && !req.session.loggedIn) {
+        res.redirect(403, '/login');
+        res.end();
+      } else {
+        return next();
+      }
+      
+    }, route_wildcard);
   }
 
   // Handle Errors
