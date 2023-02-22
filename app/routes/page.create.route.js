@@ -25,7 +25,7 @@ function route_page_create(config, raneto) {
           message: error
         });
       }
-      fs.close(fd);
+      fs.closeSync(fd)
       res.json({
         status: 0,
         message: config.lang.api.pageCreated
