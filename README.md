@@ -14,7 +14,7 @@ Markdown-CMS精简了一些个人认为无用的：
 > Raneto代码已有几年未更新，Markdown-cms只做功能上的优化，以适用为目的。
 
 # Mark文档编写约定
-在线查阅请访问 [旧书 Tech. Docs 官网](http://tech.icoding.tech)
+在线查阅请访问 [旧书 Tech. Docs 官网](http://tech.jiu-shu.top)
 ## 文档注意事项
 - 文件名不要出现‘.’
 - 尽量使用英文文件夹；尽量使用英文文件名；文件夹名称需要注意大小写（IT Technologies会引发错误，正确的写法是It Technologies）
@@ -42,5 +42,5 @@ new mode 10075
 以上是权限模型改变导致的，可以通过设置 `git config core.filemode false` 绕过这个问题：
 
 # GITHUB Webhooks 使用
-通过github的webhooks，可以对github的仓库在服务端的事件进行监听并且发送post请求。 可以在我们的web server端来接受post请求做出相应的操作。本repo设置了webhooks的请求，相应的push事件会触发[旧书 Tech. Docs 官网](http://tech.icoding.tech)上的文档的更新。
+通过github的webhooks，可以对github的仓库在服务端的事件进行监听并且发送post请求。 可以在我们的web server端来接受post请求做出相应的操作。本repo设置了webhooks的请求，相应的push事件会触发[旧书 Tech. Docs 官网](http://tech.jiu-shu.top)上的文档的更新。
 > webhooks最好使用了secret保护; 参考文档： https://developer.github.com/webhooks/securing/。
